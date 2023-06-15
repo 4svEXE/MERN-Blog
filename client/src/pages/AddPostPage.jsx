@@ -6,55 +6,46 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { checkIsAuth } from "redux/features/auth/authSlice";
 
-checkIsAuth
-
 function AddPostPage() {
   const isAuth = useSelector(checkIsAuth);
 
   const [title, setTitle] = useState("");
   const [text, setText] = useState("");
   const [image, setImage] = useState("");
-  // const { status } = useSelector((state) => {
-  //   return state.auth;
-  // });
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (status) toast(status);
-    // if (isAuth) navigate("/");
-  }, [status, navigate]);
-
   const handleSubmit = () => {
     if (title.length > 5 && text.length > 5) {
       try {
-        const data = new formData();
+        const data = new FormData();
         data.append('title', title);
         data.append('text', text);
         data.append('image', image);
-
-        console.log('handleSubmit33333333333333333333333', new FormData());
         dispatch(createPost(data));
 
-        // console.log("handleSubmit", title, text);
       } catch (error) {
-        console.error(error);
+        console.error('error 228', error);
       }
     } else {
       toast("All texts must be longer than 5 characters");
     }
   };
 
+  useEffect(() => {
+    if (!isAuth) navigate("/");
+
+  }, [navigate]);
+
   return (
     <form
       onSubmit={(e) => e.preventDefault()}
       className="container flex flex-col p-6 items-center"
     >
-
       <h1 className="text-4xl text-center py-4">
       {
-        isAuth ? "New post form": "PLEASE LOGIN!"
+        isAuth ? "New post form": "ERROR"
       }
       </h1>
 

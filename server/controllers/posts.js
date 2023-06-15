@@ -1,9 +1,11 @@
-import path, { dirname } from "path";
-import { fileURLToPath } from "url";
-
 // Models
 import Post from "../models/Post.js";
 import User from "../models/User.js";
+
+import path, { dirname } from "path";
+import { fileURLToPath } from "url";
+
+
 
 // Create a post
 export const createPost = async (req, res) => {
@@ -35,7 +37,7 @@ export const createPost = async (req, res) => {
         $push: { posts: newPostWithImage },
       });
 
-      return res.join({ message: "New post created!", newPostWithImage });
+      return res.json({ message: "New post created!", newPostWithImage });
     }
 
     const newPostWithoutImage = new Post({
@@ -45,13 +47,13 @@ export const createPost = async (req, res) => {
       author: req.userId,
     });
 
+    await newPostWithoutImage.save(); 
     await User.findByIdAndUpdate(req.userId, {
-      $push: { posts: newPostWithImage },
+      $push: { posts: newPostWithoutImage },
     });
 
-    return res.join({ message: "New post created!", newPostWithoutImage });
+    return res.json({ message: "New post created!", newPostWithoutImage });
 
-    // res.json({ newUser, token, message: "Your account has been registered" });
   } catch (error) {
     console.error(error.message);
     res.json({

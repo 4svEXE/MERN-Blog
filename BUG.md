@@ -6,4 +6,4 @@
 ## Треба вивчити:
 1. Redux, react-redux
 2. axios
-3. 
+3. https://www.youtube.com/watch?v=QxTeE5EMiWI
